@@ -21,13 +21,17 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+bias = ones(m, 1);
+a_with_bias = [bias X];
 
+z1 = Theta1 * a_with_bias';
+a1 = sigmoid(z1)';
 
+a_with_bias = [bias a1];
+z2 = Theta2 * a_with_bias';
+a2 = sigmoid(z2)';
 
-
-
-
-
+[value, p] = max (a2, [], 2);
 
 % =========================================================================
 
