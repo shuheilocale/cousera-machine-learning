@@ -1,0 +1,11 @@
+underfitting
+overfitting
+high bias 
+high variance
+regularize 正規化（荷重減衰）する
+correspond　対応する
+
+dignosis 診断
+accurate 正確
+
+converge 収束する

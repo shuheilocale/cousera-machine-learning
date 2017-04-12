@@ -21,8 +21,8 @@ for iter = 1:num_iters
 	
 	tempTheta = theta;
 	
-    tempTheta(1) = theta(1) - alpha * (1/m) * sum((h - y) .* X(:,1));
-    tempTheta(2) = theta(2) - alpha * (1/m) * sum((h - y) .* X(:,2));
+    tempTheta(1) = theta(1) - alpha * (1/m) * sum((h - y)' * X(:,1));
+    tempTheta(2) = theta(2) - alpha * (1/m) * sum((h - y)' * X(:,2));
 
     theta = tempTheta;
 
