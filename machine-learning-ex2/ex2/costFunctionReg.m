@@ -21,34 +21,15 @@ grad = zeros(size(theta));
 
 sig = sigmoid(X*theta);
 
-reg = lambda / (2 * m) * (theta' * theta - theta(1)^2);
+temp = theta;
+temp(1) = 0;
 
-% lambda / 2*m * sum(theta .^2);
-
-J = (1/m) * ( sum( -y .* log( sig ) - ( 1 .- y ) .* log( 1 - sig ) ) ) + reg;
-
-%disp(J2);
+reg = lambda / (2 * m) * (temp' * temp);
 
 
-%grad(1) = (1/m) * ( sum( sig .- y ) * X(1) );
+J = (1/m) * (  -y' * log( sig ) - ( 1 .- y' ) * log( 1 - sig ) ) + reg;
 
-%for i=2:length(theta)
-%  grad(i) = (1/m) * ( sum( sig .- y ) * X(i) ) + lambda / m * theta(i);
-%endfor
-
-
-%%%
-
-%sig = sigmoid(X * theta); 
-
-%reg = lambda / (2 * m) * (theta' * theta - theta(1)^2);
-
-%J = 1 / m * (-y' * log(sig) - (1 - y') * log(1 - sig)) + reg;
-
-mask = ones(size(theta));
-mask(1) = 0;
-
-grad = 1 / m * X' * (sig - y) + lambda / m * (theta .* mask);
+grad = 1 / m * X' * (sig - y) + lambda / m * temp;
 
 
 

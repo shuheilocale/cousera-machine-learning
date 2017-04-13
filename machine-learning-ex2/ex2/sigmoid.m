@@ -10,7 +10,9 @@ g = zeros(size(z));
 %               vector or scalar).
 
 %disp(exp(-1 * z))
-g = (1 + exp(-1 * z)) .^ -1;
+%disp(z)
+%g = 1 ./ (1 + exp(-1 * z));
+g = 1./(1+exp(-z)) ;
 %g = 1 / ( 1 + e.^z)
 
 
