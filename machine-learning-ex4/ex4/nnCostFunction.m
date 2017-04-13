@@ -63,12 +63,88 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+% 10クラスと言う意味
+K = num_labels;
+
+%　yが正解値になってるのでこれをベクトル1=[1,0,0,0,..]みたいな
+% 形式に変更する
+Y = eye(K)(y, : );
+
+bias = ones(m, 1);
+a1 = [bias X];
+
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
+
+bias = ones(size(a2,1), 1);
+a2 = [bias a2];
+
+z3 = a2 * Theta2';
+hx = sigmoid(z3);
+
+% コスト計算
+cost = sum((-Y .* log(hx)) - ((1 - Y) .* log(1 - hx)), 2);
+
+
+Theta1_no_0 = Theta1(:, 2:end);
+Theta2_no_0 = Theta2(:, 2:end);
+
+reg = 0;
+for j=1:size(Theta1_no_0,1)
+  for k=1:size(Theta1_no_0,2)
+       reg += ( Theta1_no_0(j,k) * Theta1_no_0(j,k)' );
+    endfor
+endfor
+
+for j=1:size(Theta2_no_0,1)
+  for k=1:size(Theta2_no_0,2)
+       reg += ( Theta2_no_0(j,k) * Theta2_no_0(j,k)' );
+    endfor
+endfor
+
+
+reg = ( lambda / (2 * m) ) * reg;
+
+
+J = ( 1 / m ) * sum(cost) + reg;
+
+% backpropagation
+
+
+% Delta(l) values
+Delta1 = 0;
+Delta2 = 0;
+
+
+% サンプル分だけ回す
+for t = 1:m 
+	% 1. input layer's value
+	a1 = [1; X(t, :)'];
+	z2 = Theta1 * a1;
+	a2 = [1; sigmoid(z2)];
+
+	z3 = Theta2 * a2;
+	a3 = sigmoid(z3);
+
+	% 2. output layer
+	d3 = a3 - Y(t, :)';
+	
+	% 3. hidden layer
+	d2 = (Theta2_no_0' * d3) .* sigmoidGradient(z2);
+
+	% 4. gradient
+  Delta1 += (d2 * a1');
+	Delta2 += (d3 * a2');
+endfor
+
+% 5. theta gradient 
+Theta1_grad = (1 / m) * Delta1;
+Theta2_grad = (1 / m) * Delta2;
 
 
 
-
-
-
+Theta1_grad(:, 2:end) += lambda/m * Theta1_no_0;
+Theta2_grad(:, 2:end) += lambda/m * Theta2_no_0;
 
 
 
