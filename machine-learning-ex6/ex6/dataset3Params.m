@@ -25,9 +25,20 @@ sigma = 0.3;
 
 
 
+best_prediction = 10000;
+for C_i=[0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+    for sig_j=[0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]
+        model= svmTrain(X, y, C_i, @(x1, x2) gaussianKernel(x1, x2, sig_j)); 
+        predictions = svmPredict(model, Xval);
+        prediction = mean(double(predictions ~= yval));
 
-
-
+        if prediction < best_prediction
+            best_prediction = prediction;
+            C = C_i;
+            sigma = sig_j;
+        end
+    end
+end
 
 % =========================================================================
 
